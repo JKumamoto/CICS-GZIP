@@ -3,5 +3,5 @@
 		name="CI1GZIP" description="Teste CICS GZIP"
 		status="ENABLED" cedf="YES" datalocation="ANY"
 		execkey="CICS" concurrency="REQUIRED" api="CICSAPI" dynamic="NO"
-		jvm="YES" jvmclass="Teste2.test2"
+		jvm="YES" jvmclass="teste.ci1.Gzip"
 		jvmserver="DFHOSGI" hotpool="NO"/>

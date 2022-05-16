@@ -31,7 +31,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>teste.ci1</groupId>
-			<artifactId>gzip</artifactId>
+			<artifactId>Gzip</artifactId>
 			<version>1.0.0</version>
 			<!--<type>osgi-bundle</type>-->
 		</dependency>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <manifest xmlns="http://www.ibm.com/xmlns/prod/cics/bundle" bundleMajorVer="1" bundleMicroVer="0" bundleMinorVer="0" bundleRelease="0" bundleVersion="1" id="Gzip_Bundle">
   <meta_directives>
-    <timestamp>2022-05-16T12:46:16.338Z</timestamp>
+    <timestamp>2022-05-16T17:07:57.960Z</timestamp>
   </meta_directives>
-  <define name="gzip-1.0.0" path="gzip-1.0.0.osgibundle" type="http://www.ibm.com/xmlns/prod/cics/bundle/OSGIBUNDLE"/>
+  <define name="Gzip-1.0.0" path="Gzip-1.0.0.osgibundle" type="http://www.ibm.com/xmlns/prod/cics/bundle/OSGIBUNDLE"/>
   <define name="CI1GZIP" path="CI1GZIP.program" type="http://www.ibm.com/xmlns/prod/cics/bundle/PROGRAM"/>
 </manifest>
