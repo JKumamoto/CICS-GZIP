@@ -7,7 +7,7 @@
     <groupId>teste.ci1</groupId>
     <artifactId>Gzip_Bundle</artifactId>
 	<packaging>cics-bundle</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -32,8 +32,7 @@
 		<dependency>
 			<groupId>teste.ci1</groupId>
 			<artifactId>Gzip</artifactId>
-			<version>1.0.0</version>
-			<!--<type>osgi-bundle</type>-->
+			<version>1.0.1</version>
 		</dependency>
 	</dependencies>
 
