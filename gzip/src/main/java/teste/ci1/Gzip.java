@@ -60,7 +60,9 @@ public class Gzip {
 
             // Convert the received data into a valid String
             // Assume this is a valid character string in the CICS local CCSID
-            return holder.getStringValue();
+            String st = holder.getStringValue();
+			tpf.clear();
+			return st;
         }else {
             // Not a terminal principal facility
             return null;
@@ -96,7 +98,7 @@ public class Gzip {
 	public static String decompress(byte[] compressed) throws IOException {
 		ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
 		GZIPInputStream gis = new GZIPInputStream(bis);
-		BufferedReader br = new BufferedReader(new InputStreamReader(gis, "UTF-8"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(gis, "ISO-8859-1"));
 		StringBuilder sb = new StringBuilder();
 		String line;
 		while((line = br.readLine()) != null) {
