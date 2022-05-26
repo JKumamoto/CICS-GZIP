@@ -32,7 +32,7 @@ public class Gzipb {
 	public static String decompress(byte[] compressed) throws IOException {
 		ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
 		GZIPInputStream gis = new GZIPInputStream(bis);
-		BufferedReader br = new BufferedReader(new InputStreamReader(gis, "UTF-8"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(gis));
 		StringBuilder sb = new StringBuilder();
 		String line;
 		while((line = br.readLine()) != null) {

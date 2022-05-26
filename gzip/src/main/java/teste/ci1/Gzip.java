@@ -5,6 +5,8 @@ import com.ibm.cics.server.*;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -14,76 +16,45 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class Gzip {
-    /**
-     * Main entry point to a CICS OSGi program.
-     */
-    public static void main(String[] args) throws CicsConditionException {
-		Task task = Task.getTask();
-		String strTerm = getTerminalString();
 
-		if (strTerm != null){
-			String[] termArgs = parseTerminalString(strTerm);
+	private static final String LOCAL_CCSID = System.getProperty("com.ibm.cics.jvmserver.local.ccsid");
 
-			try{
-				byte[] compressed = compress(termArgs[1]);
+    public static void main(CommAreaHolder cah){
+		Task task = null;
+		byte DFHCOMMAREA[] = cah.getValue();
+		try{
+			task = Task.getTask();
+			if (DFHCOMMAREA.length > 0){
+				ByteArrayInputStream bais = new ByteArrayInputStream(DFHCOMMAREA);
+				BufferedInputStream buff = new BufferedInputStream(bais);
+				DataInputStream dis = new DataInputStream(buff);
+				int size = dis.readInt();
+
+				byte[] b2=new byte[size];
+				for(int i=0; i<size; i++)
+					b2[i] = (byte) dis.readUnsignedByte();
+
+				String texto = new String(b2, LOCAL_CCSID);
+
+				byte[] compressed = compress(texto);
 				task.out.print("GZIP comprimido: ");
 				task.out.print(compressed);
 				task.out.println("\nGZIP descomprimido: " + decompress(compressed));
-			}catch(IOException e){
-				e.printStackTrace();
+
+				byte[] volta = new byte[b2.length+compressed.length];
+				for(int i=0; i<b2.length; i++)
+					volta[i]=b2[i];
+				for(int i=b2.length; i<compressed.length; i++)
+					volta[i]=compressed[i-b2.length];
+
+				cah.setValue(b2);
+			}else{
+				task.err.println("Chamado sem commarea");
 			}
+		}catch(IOException e){
+			e.printStackTrace();
 		}
-    }
-
-	private static String getTerminalString() throws CicsConditionException    {
-        Object pf = Task.getTask().getPrincipalFacility();
-
-        // Are we of a suitable type?
-        if ( pf instanceof TerminalPrincipalFacility) {
-
-            // Cast to correct type
-            TerminalPrincipalFacility tpf = (TerminalPrincipalFacility) pf;
-
-            // Create a holder object to store the data
-            DataHolder holder = new DataHolder();
-            try {
-                // Perform the receive from the terminal
-                tpf.receive(holder);
-            }
-            catch (EndOfChainIndicatorException e) {
-                // Normal operation - ignore this one
-            }
-            catch (CicsConditionException cce) {
-                // Propagate all other problems
-                throw cce;
-            }
-
-            // Convert the received data into a valid String
-            // Assume this is a valid character string in the CICS local CCSID
-            String st = holder.getStringValue();
-			tpf.clear();
-			return st;
-        }else {
-            // Not a terminal principal facility
-            return null;
-        }
-    }
-
-	private static String[] parseTerminalString(String strTerm){
-        // A place to store the output collection
-        List<String> args = new ArrayList<>();
-
-        // Tokenize the input string using standard whitespace characters
-        StringTokenizer tok = new StringTokenizer(strTerm);
-
-        // Add each of the tokens to the output collection
-        while ( tok.hasMoreTokens() ) {
-            args.add(tok.nextToken());
-        }
-
-        // Convert the collection to an array
-        return args.toArray( new String[args.size()] );
-    }
+	}
 
 	public static byte[] compress(String data) throws IOException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(data.length());
@@ -98,7 +69,7 @@ public class Gzip {
 	public static String decompress(byte[] compressed) throws IOException {
 		ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
 		GZIPInputStream gis = new GZIPInputStream(bis);
-		BufferedReader br = new BufferedReader(new InputStreamReader(gis, "ISO-8859-1"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(gis, LOCAL_CCSID));
 		StringBuilder sb = new StringBuilder();
 		String line;
 		while((line = br.readLine()) != null) {

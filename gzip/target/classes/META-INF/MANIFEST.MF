@@ -1,13 +1,13 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1652791051127
+Bnd-LastModified: 1653571271213
 Build-Jdk-Spec: 1.8
 Bundle-ManifestVersion: 2
 Bundle-Name: Gzip
 Bundle-SymbolicName: teste.ci1.Gzip
-Bundle-Version: 1.0.2
+Bundle-Version: 1.0.3
 CICS-MainClass: teste.ci1.Gzip
 Created-By: Apache Maven Bundle Plugin 5.1.4
-Export-Package: teste.ci1;uses:="com.ibm.cics.server";version="1.0.2"
+Export-Package: teste.ci1;uses:="com.ibm.cics.server";version="1.0.3"
 Import-Package: com.ibm.cics.server;version="[1.700,2)"
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
 Tool: Bnd-5.1.1.202006162103
